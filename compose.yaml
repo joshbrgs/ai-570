@@ -1,0 +1,23 @@
+services:
+  jupyter:
+    build:
+      context: .
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    image: ai-570-jupyter:local
+    container_name: ai-570-jupyter
+    ports:
+      # Bound to localhost only -- the server is not reachable from your network.
+      - "127.0.0.1:${JUPYTER_PORT:-8888}:8888"
+    environment:
+      JUPYTER_TOKEN: ${JUPYTER_TOKEN:-seefood}
+    volumes:
+      # The repo itself: notebooks, main.py, and generated artifacts land here.
+      - .:/workspace
+      # Persist downloaded Keras datasets/weights across container restarts.
+      - keras-cache:/home/app/.keras
+    restart: unless-stopped
+
+volumes:
+  keras-cache:

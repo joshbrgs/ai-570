@@ -1,0 +1,26 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local docker/compose overrides (JUPYTER_TOKEN, UID, etc.)
+.env
+
+# homework
+hw/
+
+
+# Local backup of pre-DVC data (temporary)
+data_local_backup/
+
+# macOS
+.DS_Store

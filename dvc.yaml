@@ -1,0 +1,34 @@
+stages:
+  extract:
+    cmd: uv run python scripts/extract_data.py
+    deps:
+      - scripts/extract_data.py
+      - data/raw/gz2_hart16.csv.gz
+      - data/raw/gz2sample.csv.gz
+      - data/raw/zoo2MainSpecz.csv.gz
+      - data/raw/zoo2MainPhotoz.csv.gz
+      - data/raw/zoo2Stripe82Normal.csv.gz
+      - data/raw/zoo2Stripe82Coadd1.csv.gz
+      - data/raw/zoo2Stripe82Coadd2.csv.gz
+      - data/raw/gz2_filename_mapping.csv
+      - data/raw/images_gz2.zip
+    # Derived from the raw imports, so they're regenerated locally rather than cached.
+    outs:
+      - data/gz2_hart16.csv:
+          cache: false
+      - data/gz2sample.csv:
+          cache: false
+      - data/zoo2MainSpecz.csv:
+          cache: false
+      - data/zoo2MainPhotoz.csv:
+          cache: false
+      - data/zoo2Stripe82Normal.csv:
+          cache: false
+      - data/zoo2Stripe82Coadd1.csv:
+          cache: false
+      - data/zoo2Stripe82Coadd2.csv:
+          cache: false
+      - data/gz2_filename_mapping.csv:
+          cache: false
+      - data/images:
+          cache: false

@@ -1,0 +1,13 @@
+md5: 9b38090de6bc3856c3ad5a3cb241b186
+frozen: true
+deps:
+- checksum: '94856088242949882806980920921239935245'
+  size: 13166201
+  hash: md5
+  path: 
+    https://zenodo.org/api/records/3565489/files/gz2_filename_mapping.csv/content
+outs:
+- md5: 7e28465e6dfbf96c0d828c595a5bbd80
+  size: 13166201
+  hash: md5
+  path: gz2_filename_mapping.csv

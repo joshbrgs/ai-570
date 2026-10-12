@@ -1,0 +1,13 @@
+md5: 9ce04d021aeb97d398590bfc08d7ea41
+frozen: true
+deps:
+- checksum: '"d794cd5cd04964ecd42346000fc58ff9"'
+  size: 8304166
+  hash: md5
+  path: 
+    https://zooniverse-data.s3.amazonaws.com/galaxy-zoo-2/zoo2MainPhotoz.csv.gz
+outs:
+- md5: d794cd5cd04964ecd42346000fc58ff9
+  size: 8304166
+  hash: md5
+  path: zoo2MainPhotoz.csv.gz

@@ -1,0 +1,13 @@
+md5: daf5e4a777439d88cd5ae5b093a10d6b
+frozen: true
+deps:
+- checksum: '"06ef7d1127415c570a8ea5d81d7f9893"'
+  size: 2605961
+  hash: md5
+  path: 
+    https://zooniverse-data.s3.amazonaws.com/galaxy-zoo-2/zoo2Stripe82Coadd2.csv.gz
+outs:
+- md5: 06ef7d1127415c570a8ea5d81d7f9893
+  size: 2605961
+  hash: md5
+  path: zoo2Stripe82Coadd2.csv.gz

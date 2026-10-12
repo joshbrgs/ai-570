@@ -1,0 +1,12 @@
+md5: 1462458e16c953320df2838bd2427fe2
+frozen: true
+deps:
+- checksum: '"5e3a105220bc5fb686e38c6bad2b7ad0"'
+  size: 78513011
+  hash: md5
+  path: https://gz2hart.s3.amazonaws.com/gz2_hart16.csv.gz
+outs:
+- md5: 5e3a105220bc5fb686e38c6bad2b7ad0
+  size: 78513011
+  hash: md5
+  path: gz2_hart16.csv.gz
