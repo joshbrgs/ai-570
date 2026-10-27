@@ -24,3 +24,13 @@ data_local_backup/
 
 # macOS
 .DS_Store
+
+# DVC pipeline outputs (cache: false, so DVC does not ignore them itself)
+/data/*.csv
+/data/images
+
+# Generated figures
+output/
+
+# Trained model checkpoints
+models/
