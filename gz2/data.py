@@ -15,6 +15,8 @@ _DEBIASED = re.compile(r"^(t\d\d)_[a-z_]+?_a\d\d_(.+)_debiased$")
 _COUNT = re.compile(r"^(t\d\d)_[a-z_]+?_a\d\d_.+_count$")
 
 ID_COLUMNS = ["dr7objid", "ra", "dec", "sample", "gz2_class", "total_classifications", "total_votes"]
+SDSS_ARCSEC_PER_PX = 0.396
+WINDING_COLS = ["t10_tight", "t10_medium", "t10_loose"]
 
 
 def morphology(gz2_class: str) -> str:
@@ -65,3 +67,18 @@ def load_galaxies(raw_dir: Path = RAW_DIR, images_dir: Path = IMAGES_DIR) -> pd.
     existing = {int(p.stem) for p in images_dir.glob("*.jpg")}
     df["has_image"] = asset.isin(existing).fillna(False).astype(bool)
     return df
+
+
+def load_photometry(raw_dir: Path = RAW_DIR) -> pd.DataFrame:
+    """Redshift, brightness and size per galaxy from `gz2sample`.
+
+    `native_px` is the galaxy's diameter (2 x Petrosian R90) in original SDSS pixels: how much real
+    detail its image holds, since GZ2 cutouts are rescaled to each galaxy's size.
+    """
+    photometry = (
+        pd.read_csv(raw_dir / "gz2sample.csv.gz", usecols=["OBJID", "REDSHIFT", "PETROR90_R", "PETROMAG_R"])
+        .rename(columns={"OBJID": "dr7objid", "REDSHIFT": "redshift", "PETROR90_R": "petro_r90_arcsec",
+                         "PETROMAG_R": "r_mag"})
+    )
+    photometry["native_px"] = 2 * photometry["petro_r90_arcsec"] / SDSS_ARCSEC_PER_PX
+    return photometry
