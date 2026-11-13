@@ -34,3 +34,6 @@ output/
 
 # Trained model checkpoints
 models/
+
+# JupyterLab deleted-files folder
+.Trash-*/
