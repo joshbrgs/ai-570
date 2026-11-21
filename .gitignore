@@ -29,8 +29,10 @@ data_local_backup/
 /data/*.csv
 /data/images
 
-# Generated figures
-output/
+# Generated figures; test predictions and training histories are small and shared via git
+output/*
+!output/predictions/
+!output/history/
 
 # Trained model checkpoints
 models/
