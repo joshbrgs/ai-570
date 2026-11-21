@@ -14,6 +14,7 @@ from sklearn.metrics import roc_auc_score
 from gz2.data import ROOT, WINDING_COLS, load_galaxies, load_photometry
 
 PREDICTIONS_DIR = ROOT / "output" / "predictions"
+HISTORY_DIR = ROOT / "output" / "history"
 CONFIDENT = 0.8
 TRUE_COLS = [f"{c}_true" for c in WINDING_COLS]
 PRED_COLS = [f"{c}_pred" for c in WINDING_COLS]
@@ -82,6 +83,22 @@ def save_predictions(preds: pd.DataFrame, model_name: str, seed: int) -> Path:
 def load_predictions(model_name: str) -> list[pd.DataFrame]:
     """All saved seeds for one model, e.g. `load_predictions("jax_cnn")`."""
     return [pd.read_csv(p) for p in sorted(PREDICTIONS_DIR.glob(f"{model_name}_seed*.csv"))]
+
+
+def save_history(history: pd.DataFrame, model_name: str, seed: int) -> Path:
+    """Per-epoch training history, so learning curves can be compared across notebooks."""
+    HISTORY_DIR.mkdir(parents=True, exist_ok=True)
+    path = HISTORY_DIR / f"{model_name}_seed{seed}.csv"
+    history.to_csv(path, index=False)
+    return path
+
+
+def load_histories(model_name: str) -> list[pd.DataFrame]:
+    """All saved seeds' histories for one model, each with a `seed` column."""
+    return [
+        pd.read_csv(p).assign(seed=int(p.stem.rsplit("seed", 1)[1]))
+        for p in sorted(HISTORY_DIR.glob(f"{model_name}_seed*.csv"))
+    ]
 
 
 def per_galaxy_errors(runs: list[pd.DataFrame]) -> pd.DataFrame:

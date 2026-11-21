@@ -6,6 +6,7 @@ and compared with exactly the same code.
 """
 
 import time
+from pathlib import Path
 
 import jax
 import jax.numpy as jnp
@@ -13,16 +14,36 @@ import numpy as np
 import optax
 import pandas as pd
 import tensorflow as tf
-from flax import nnx
+from flax import nnx, serialization
 
+from gz2.data import ROOT
 from gz2.evaluate import metrics
 from gz2.pipeline import WINDING_COLS
 
+MODELS_DIR = ROOT / "models"
+_WEIGHTS = nnx.Any(nnx.Param, nnx.BatchStat)  # learned weights + BatchNorm running statistics
 _JAX_KEYS = ("image", "bar", "bar_w", "winding", "winding_w")  # dr7objid stays on the host (int64)
 
 
 def count_params(model: nnx.Module) -> int:
     return sum(x.size for x in jax.tree.leaves(nnx.state(model, nnx.Param)))
+
+
+def save_model(model: nnx.Module, model_name: str, seed: int) -> Path:
+    """Save weights to models/{model_name}_seed{seed}.msgpack (reload with `load_weights`)."""
+    MODELS_DIR.mkdir(parents=True, exist_ok=True)
+    path = MODELS_DIR / f"{model_name}_seed{seed}.msgpack"
+    path.write_bytes(serialization.msgpack_serialize(nnx.state(model, _WEIGHTS).to_pure_dict()))
+    return path
+
+
+def load_weights(model: nnx.Module, path: Path) -> nnx.Module:
+    """Load saved weights into a freshly built model with the same architecture and config."""
+    state = nnx.state(model, _WEIGHTS)
+    state.replace_by_pure_dict(serialization.msgpack_restore(Path(path).read_bytes()))
+    nnx.update(model, state)
+    model.eval()
+    return model
 
 
 def masked_losses(bar_logit: jax.Array, winding_logits: jax.Array, batch: dict) -> tuple[jax.Array, jax.Array]:
